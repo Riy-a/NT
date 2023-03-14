@@ -376,3 +376,361 @@ int main()
 		 }
 		 return(0);
 }
+
+//JACOBI METHOD
+
+
+#include<iostream>
+#include<iomanip>
+#include<math.h>
+
+#define f1(x,y,z)  (17-y+2*z)/20
+#define f2(x,y,z)  (-18-3*x+z)/20
+#define f3(x,y,z)  (25-2*x+3*y)/20
+
+using namespace std;
+
+
+int main()
+{
+ float x0=0, y0=0, z0=0, x1, y1, z1, e1, e2, e3, e;
+ int step=1;
+
+
+ cout<< setprecision(6)<< fixed;
+
+
+ cout<<"Enter tolerable error: ";
+ cin>>e;
+
+ cout<< endl<<"Count\tx\t\ty\t\tz"<< endl;
+ do
+ {
+  /* Calculation */
+  x1 = f1(x0,y0,z0);
+  y1 = f2(x0,y0,z0);
+  z1 = f3(x0,y0,z0);
+  cout<< step<<"\t"<< x1<<"\t"<< y1<<"\t"<< z1<< endl;
+
+  /* Error */
+  e1 = fabs(x0-x1);
+  e2 = fabs(y0-y1);
+  e3 = fabs(z0-z1);
+
+  step++;
+
+  /* Set value for next iteration */
+  x0 = x1;
+  y0 = y1;
+  z0 = z1;
+ }while(e1>e && e2>e && e3>e);
+
+ cout<< endl<<"Solution: x = "<< x1<<", y = "<< y1<<" and z = "<< z1;
+ return 0;
+}
+
+
+
+//GAUSS SIEDAL METHOD
+
+
+#include<iostream>
+#include<iomanip>
+#include<math.h>
+
+
+
+#define f1(x,y,z)  (17-y+2*z)/20
+#define f2(x,y,z)  (-18-3*x+z)/20
+#define f3(x,y,z)  (25-2*x+3*y)/20
+
+using namespace std;
+
+
+int main()
+{
+ float x0=0, y0=0, z0=0, x1, y1, z1, e1, e2, e3, e;
+ int step=1;
+
+
+ cout<< setprecision(6)<< fixed;
+
+
+ cout<<"Enter tolerable error: ";
+ cin>>e;
+
+ cout<< endl<<"Count\tx\t\ty\t\tz"<< endl;
+
+ do
+ {
+  x1 = f1(x0,y0,z0);
+  y1 = f2(x1,y0,z0);
+  z1 = f3(x1,y1,z0);
+
+  cout<< step<<"\t"<< x1<<"\t"<< y1<<"\t"<< z1<< endl;
+
+
+  e1 = fabs(x0-x1);
+  e2 = fabs(y0-y1);
+  e3 = fabs(z0-z1);
+
+  step++;
+
+
+  x0 = x1;
+  y0 = y1;
+  z0 = z1;
+
+ }while(e1>e && e2>e && e3>e);
+
+ cout<< endl<<"Solution: x = "<< x1<<", y = "<< y1<<" and z = "<< z1;
+ return 0;
+}
+
+
+
+//POWER METHOD
+
+#include<iostream>
+#include<iomanip>
+#include<stdio.h>
+#include<math.h>
+
+#define SIZE 10
+
+using namespace std;
+
+int main()
+{
+	 float a[SIZE][SIZE], x[SIZE],x_new[SIZE];
+	 float temp, lambda_new, lambda_old, error;
+	 int i,j,n, step=1;
+
+
+     cout<< setprecision(3)<< fixed;
+
+
+	 cout<<"Enter Order of Matrix: ";
+	 cin>>n;
+
+
+	 cout<<"Enter Tolerable Error: ";
+	 cin>>error;
+
+
+	 cout<<"Enter Coefficient of Matrix: "<< endl;
+	 for(i=1;i<=n;i++)
+	 {
+		  for(j=1;j<=n;j++)
+		  {
+			   cout<<"a["<< i<<"]"<< j<<"]= ";
+               cin>>a[i][j];
+		  }
+	 }
+
+	 cout<<"Enter Initial Guess Vector: "<< endl;
+	 for(i=1;i<=n;i++)
+	 {
+		  cout<<"x["<< i<<"]= ";
+		  cin>>x[i];
+	 }
+
+
+	 lambda_old = 1;
+
+	 up:
+	 for(i=1;i<=n;i++)
+	 {
+		  temp = 0.0;
+		  for(j=1;j<=n;j++)
+		  {
+		   	temp = temp + a[i][j]*x[j];
+		  }
+		  x_new[i] = temp;
+	 }
+
+
+	 for(i=1;i<=n;i++)
+	 {
+	  	x[i] = x_new[i];
+	 }
+
+
+	 lambda_new = fabs(x[1]);
+	 for(i=2;i<=n;i++)
+	 {
+		  if(fabs(x[i])>lambda_new)
+		  {
+		   	lambda_new = fabs(x[i]);
+		  }
+	 }
+
+
+	 for(i=1;i<=n;i++)
+	 {
+	  	x[i] = x[i]/lambda_new;
+	 }
+
+	 cout<< endl<< endl<<"STEP-"<< step<< endl;
+	 cout<<"Eigen Value = "<< lambda_new<< endl;
+	 cout<<"Eigen Vector: "<< endl;
+	 cout<<"[";
+	 for(i=1;i<=n;i++)
+	 {
+	  	cout<< x[i]<<"\t";
+	 }
+     cout<<"\b\b\b]";
+
+
+	 if(fabs(lambda_new-lambda_old)>error)
+	 {
+		  lambda_old=lambda_new;
+		  step++;
+		  goto up;
+	 }
+
+	 return(0);
+}
+
+
+//LAGRANGE INTERPOLATION
+
+
+#include<iostream>
+#include<conio.h>
+
+using namespace std;
+
+int main()
+{
+	 float x[100], y[100], xp, yp=0, p;
+	 int i,j,n;
+
+	 /* Input Section */
+	 cout<<"Enter number of data: ";
+	 cin>>n;
+	 cout<<"Enter data:"<< endl;
+	 for(i=1;i<=n;i++)
+	 {
+		  cout<<"x["<< i<<"] = ";
+		  cin>>x[i];
+		  cout<<"y["<< i<<"] = ";
+		  cin>>y[i];
+	 }
+	 cout<<"Enter interpolation point: ";
+	 cin>>xp;
+
+	 /* Implementing Lagrange Interpolation */
+	 for(i=1;i<=n;i++)
+	 {
+		  p=1;
+		  for(j=1;j<=n;j++)
+		  {
+			   if(i!=j)
+			   {
+			    	p = p* (xp - x[j])/(x[i] - x[j]);
+			   }
+		  }
+		  yp = yp + p * y[i];
+	 }
+	 cout<< endl<<"Interpolated value at "<< xp<< " is "<< yp;
+
+	 return 0;
+}
+
+
+
+//NEWTON DIVIDED DIFFERENCE
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+float proterm(int i, float value, float x[])
+{
+    float pro = 1;
+    for (int j = 0; j < i; j++) {
+        pro = pro * (value - x[j]);
+    }
+    return pro;
+}
+
+
+void dividedDiffTable(float x[], float y[][10], int n)
+{
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < n - i; j++) {
+            y[j][i] = (y[j][i - 1] - y[j + 1]
+                         [i - 1]) / (x[j] - x[i + j]);
+        }
+    }
+}
+
+
+float applyFormula(float value, float x[],
+                   float y[][10], int n)
+{
+    float sum = y[0][0];
+
+    for (int i = 1; i < n; i++) {
+      sum = sum + (proterm(i, value, x) * y[0][i]);
+    }
+    return sum;
+}
+
+
+void printDiffTable(float y[][10],int n)
+{
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i; j++) {
+            cout << setprecision(4) <<
+                                 y[i][j] << "\t ";
+        }
+        cout << "\n";
+    }
+}
+
+
+int main()
+{
+
+    int n ;
+    char ans='n';
+    cout<<"enter the value for n"<<endl;
+    cin>>n;
+    float value, sum, y[10][10],x[10];
+    cout<<"enter  values of x"<<endl;
+    for(int i =0;i<n;i++)
+    {
+        cin>>x[i];
+    }
+     cout<<"enter  values of f(x)"<<endl;
+     for(int i =0;i<n;i++)
+    {
+          cin>>y[i][0];
+    }
+
+
+    dividedDiffTable(x, y, n);
+
+
+    printDiffTable(y,n);
+
+    do
+    {
+
+
+    cout<<"enter the value for which polynomial needed"<<endl;
+    cin>>value;
+
+
+    cout << "\nValue at " << value << " is "
+               << applyFormula(value, x, y, n) << endl;
+    cout << "Do you want to continue (Y/N)?\n";
+    cout << "You must type a 'Y' or an 'N' :";
+    cin >> ans;
+    }while((ans == 'Y') || (ans == 'y'));
+    return 0;
+}
+
